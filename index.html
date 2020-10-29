@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+
+	<link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+		<link rel="stylesheet" href="./style.css">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600;700&display=swap" rel="stylesheet">
+	
+	<title>Rock, Paper, Scissors</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+</head>
+<body>
+	<div id="app">
+		<transition name="fade">
+			<div class="my-modal" v-show="modal">
+				<transition name="slide">
+					<div class="modal-card" v-show="modal">
+						<div class="modal-head">
+							<div class="title">
+								RULES
+							</div>
+							<div class="close" @click="closeModal()">
+								<img src="./images/icon-close.svg" alt="icon-close">
+							</div>
+						</div>
+						<div class="modal-data">
+							<img src="./images/image-rules.svg" alt="img-rules">
+						</div>
+					</div>
+				</transition>
+			</div>
+		</transition>
+		<div class="game" >
+			<div class="header">
+				<div class="header-text">
+					ROCK PAPER SCISSORS
+				</div>
+				<div class="score">
+					<div class="score-text">SCORE</div>
+					<div class="score-num">{{score}}</div>
+				</div>
+			</div>
+			<div class="playground" :class="{'end': step > 2}">
+				<transition name="slide">
+					<div class="selection-holder" v-show="step == 1">
+						<div class="selection">
+							<div class="triangle"></div>
+							<div class="row">
+								<div class="item paper">
+									<div class="main" @click="setOwn(1)">
+										<img src="./images/icon-paper.svg" alt="paper-img">
+									</div>
+								</div>
+								<div class="item scissors">
+									<div class="main" @click="setOwn(2)">
+										<img src="./images/icon-scissors.svg" alt="paper-img">
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="item rock">
+									<div class="main" @click="setOwn(0)">
+										<img src="./images/icon-rock.svg" alt="paper-img">
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</transition>
+				<transition name="slide">
+					<div class="start" v-show="step > 1 && step <= 3">
+						<div class="card-hold own">
+							<div class="text">
+								You picked
+							</div>
+							<div class="winner-circles" v-if="status == 1">
+								<div class="circle"></div>
+								<div class="circle"></div>
+								<div class="circle"></div>
+							</div>
+							<div class="item active" :class="[values[own], {winner: status == 1}]">
+								<div class="main" v-if="own != null">
+									<img :src="'./images/icon-'+values[own]+'.svg'" alt="own-img">
+								</div>
+							</div>
+						</div>
+						<!-- <transition name="slide-up">
+							<div class="result" v-show="step == 3">
+								<div class="text" v-if="status == 0">
+									You lose
+								</div>
+								<div class="text" v-else-if="status == 1">
+									You win
+								</div>
+								<div class="text" v-else>
+									You tie
+								</div>
+								<button class="btn-restart" :class="{lose: status == 0}" @click="playAgain()">
+									Play again
+								</button>
+							</div>
+						</transition> -->
+						<div class="card-hold house">
+							<div class="text" v-if="house != null">
+								The house picked
+							</div>
+							<div class="text" v-else>
+								The house is picking
+							</div>
+							<div class="winner-circles" v-if="status == 0">
+								<div class="circle"></div>
+								<div class="circle"></div>
+								<div class="circle"></div>
+							</div>
+							<div class="item" :class="[values[house], {active: house != null}]" >
+								<div class="empty" v-if="house == null"></div>
+								<div class="main" v-else >
+									<img :src="'./images/icon-'+values[house]+'.svg'" alt="paper-img">
+								</div>
+							</div>
+						</div>
+					</div>
+				</transition>
+				<transition name="slide-up">
+					<div class="result" v-show="step == 3">
+						<div class="text" v-if="status == 0">
+							You lose
+						</div>
+						<div class="text" v-else-if="status == 1">
+							You win
+						</div>
+						<div class="text" v-else>
+							You tie
+						</div>
+						<button class="btn-restart" :class="{lose: status == 0}" @click="playAgain()">
+							Play again
+						</button>
+					</div>
+				</transition>
+			</div>
+			<button class="rules" @click="modal = true">
+				Rules
+			</button>
+		</div>
+	</div>
+	<script src="./script.js"></script>
+</body>
+</html>
